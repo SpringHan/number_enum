@@ -71,6 +71,10 @@ fn impl_convert_traits(name: &Ident, data: &DataEnum, repr: &Ident) -> TokenStre
     }
 
     quote! {
+        impl #name {
+            pub const MAX_NUMBER: #repr = #current_number as #repr;
+        }
+
         impl Into<#repr> for #name {
             fn into(self) -> #repr {
                 match self {
