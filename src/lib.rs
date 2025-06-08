@@ -35,7 +35,7 @@ pub fn derive_number_enum(input: proc_macro::TokenStream) -> proc_macro::TokenSt
     };
 
     let impl_convert = impl_convert_traits(&enum_name, &data, &repr);
-    let impl_calc = impl_calc_traits(&enum_name, &repr);
+    let impl_calc = impl_calc_methods(&enum_name, &repr);
 
     proc_macro::TokenStream::from(quote! {
         #impl_convert
@@ -96,8 +96,28 @@ fn impl_convert_traits(name: &Ident, data: &DataEnum, repr: &Ident) -> TokenStre
     }
 }
 
-fn impl_calc_traits(name: &Ident, repr: &Ident) -> TokenStream {
+fn impl_calc_methods(name: &Ident, repr: &Ident) -> TokenStream {
     quote! {
+        impl #name {
+            pub fn add_number(self, rhs: #repr) -> Self {
+                let enum_num: #repr = self.into();
+                (enum_num + rhs).into()
+            }
+
+            pub fn sub_number(self, rhs: #repr) -> Self {
+                let enum_num: #repr = self.into();
+                (enum_num - rhs).into()
+            }
+
+            pub fn add_number_assign(&mut self, rhs: #repr) -> Self {
+                *self = self.add_number(rhs);
+            }
+
+            pub fn sub_number_assign(&mut self, rhs: #repr) -> Self {
+                *self = self.sub_number(rhs);
+            }
+        }
+
         impl std::ops::Add for #name {
             type Output = Self;
 
