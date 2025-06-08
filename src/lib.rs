@@ -109,11 +109,11 @@ fn impl_calc_methods(name: &Ident, repr: &Ident) -> TokenStream {
                 (enum_num - rhs).into()
             }
 
-            pub fn add_number_assign(&mut self, rhs: #repr) -> Self {
+            pub fn add_number_assign(&mut self, rhs: #repr) {
                 *self = self.add_number(rhs);
             }
 
-            pub fn sub_number_assign(&mut self, rhs: #repr) -> Self {
+            pub fn sub_number_assign(&mut self, rhs: #repr) {
                 *self = self.sub_number(rhs);
             }
         }
